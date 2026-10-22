@@ -141,4 +141,20 @@ class AnnualOverviewTest extends TestCase
         $response->assertSessionHasErrors('installment_count');
         $this->assertDatabaseCount('debtors', 0);
     }
+
+    public function test_missing_required_debtor_fields_and_amount_are_highlighted(): void
+    {
+        $vendor = User::factory()->create();
+
+        $response = $this->from(route('debtors.create'))->actingAs($vendor)->post(route('debtors.store'), [
+            'incurred_on' => '2026-05-01',
+            'installment_count' => 12,
+        ]);
+
+        $response->assertRedirect(route('debtors.create'));
+        $this->followRedirects($response)
+            ->assertSee('border-red-500', false)
+            ->assertSee('name="first_name"', false)
+            ->assertSee('name="amount"', false);
+    }
 }
