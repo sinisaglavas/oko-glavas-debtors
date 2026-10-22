@@ -62,4 +62,11 @@ class RoleAccessTest extends TestCase
         $response->assertRedirect(route('dashboard'));
         $this->assertAuthenticatedAs($vendor);
     }
+
+    public function test_login_page_uses_oko_glavas_branding(): void
+    {
+        $this->get(route('login'))
+            ->assertOk()
+            ->assertSee('OKO Glavas');
+    }
 }
