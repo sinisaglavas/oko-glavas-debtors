@@ -87,4 +87,19 @@ class AdminPanelTest extends TestCase
         $this->assertDatabaseHas('debtors', ['id' => $debtor->id, 'address' => 'Nova 12', 'city' => 'Beograd']);
         $this->assertDatabaseHas('audit_logs', ['action' => 'debtor.updated', 'auditable_id' => $debtor->id]);
     }
+
+    public function test_audit_log_renders_nested_change_details(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        AuditLog::query()->create([
+            'user_id' => $admin->id,
+            'action' => 'debtor.updated',
+            'metadata' => ['before' => ['city' => 'Novi Sad'], 'after' => ['city' => 'Beograd']],
+        ]);
+
+        $this->actingAs($admin)->get(route('admin.audit'))
+            ->assertOk()
+            ->assertSee('Novi Sad')
+            ->assertSee('Beograd');
+    }
 }
