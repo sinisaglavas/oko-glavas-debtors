@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DebtorController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard');
@@ -26,4 +27,8 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/prodavac', function () {
         return view('vendor.dashboard');
     })->name('vendor.dashboard');
+
+    Route::get('/duznici', [DebtorController::class, 'index'])->name('debtors.index');
+    Route::get('/duznici/novo', [DebtorController::class, 'create'])->name('debtors.create');
+    Route::post('/duznici', [DebtorController::class, 'store'])->name('debtors.store');
 });

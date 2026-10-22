@@ -23,4 +23,12 @@ final class Money
 
         return $minor;
     }
+
+    public static function formatMinor(int $amountMinor): string
+    {
+        $whole = intdiv($amountMinor, 100);
+        $fraction = str_pad((string) ($amountMinor % 100), 2, '0', STR_PAD_LEFT);
+
+        return number_format($whole, 0, ',', '.').','.$fraction;
+    }
 }
