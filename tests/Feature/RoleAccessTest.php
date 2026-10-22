@@ -17,6 +17,18 @@ class RoleAccessTest extends TestCase
         $response->assertRedirect(route('login'));
     }
 
+    public function test_guest_cannot_access_debtor_records_or_record_payment(): void
+    {
+        $this->get(route('debtors.index'))->assertRedirect(route('login'));
+
+        $this->post('/duznici/1/uplate', [
+            'debt_id' => 1,
+            'amount' => '100,00',
+            'paid_on' => now()->toDateString(),
+            'submission_token' => 'guest-token',
+        ])->assertRedirect(route('login'));
+    }
+
     public function test_vendor_can_access_work_area_but_not_admin_area(): void
     {
         $vendor = User::factory()->create(['is_admin' => false]);
