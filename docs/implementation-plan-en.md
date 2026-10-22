@@ -113,4 +113,4 @@ Protect all business pages with login, server-side authorization, and CSRF prote
 
 ## 9. Current project state
 
-The repository now contains the preparation and data/calculation phases: login and logout, the `is_admin` column, administrator middleware, debtor, debt and payment models, validation, payment/voiding service, and calculation and access-control tests. PHP, Composer, Laravel Boost, and the frontend build are configured. Entry screens, the annual overview, and the debtor profile follow in the next step.
+The repository now contains phases 1, 2, and 3: login and logout, the `is_admin` column, administrator middleware, debtor, debt and payment models, validation, payment/voiding service, annual overview with search and filters, entry forms, and automated tests. The individual debtor page and final verification follow next.

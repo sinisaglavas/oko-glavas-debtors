@@ -1,6 +1,6 @@
 # Plan izrade aplikacije za evidenciju dužnika u optici
 
-Status: plan za realizaciju; poslovne funkcionalnosti još nisu implementirane.
+Status: faze 1, 2 i 3 su implementirane; faze 4 i 5 slede.
 
 Engleska verzija: [Implementation plan](implementation-plan-en.md).
 
@@ -113,4 +113,4 @@ Sve poslovne stranice zaštititi prijavom, serverskom autorizacijom i CSRF zašt
 
 ## 9. Trenutno stanje projekta
 
-Repozitorijum sada sadrži pripremnu fazu i fazu podataka i obračuna: prijavu i odjavu, kolonu `is_admin`, administrativni middleware, modele dužnika, zaduženja i uplata, validaciju, servis knjiženja/storna i testove obračuna i kontrole pristupa. PHP, Composer, Laravel Boost i frontend build su podešeni. Ekrani za unos, godišnji pregled i profil dužnika slede u narednom koraku.
+Repozitorijum sada sadrži pripremu, podatke i obračun, kao i godišnji pregled i unos: prijavu i odjavu, kolonu `is_admin`, administrativni middleware, modele dužnika, zaduženja i uplata, validaciju, servis knjiženja/storna, godišnji pregled sa pretragom i filterima, formu za unos i testove. Stranica pojedinačnog dužnika i završne provere slede u narednom koraku.

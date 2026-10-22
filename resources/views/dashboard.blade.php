@@ -8,7 +8,7 @@
             Prijavljeni ste kao {{ auth()->user()->isAdmin() ? 'administrator' : 'prodavac' }}.
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
-            <a href="{{ route('vendor.dashboard') }}" class="rounded-lg bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-indigo-700">Rad sa dužnicima</a>
+            <a href="{{ route('debtors.index') }}" class="rounded-lg bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-indigo-700">Rad sa dužnicima</a>
             @if (auth()->user()->isAdmin())
                 <a href="{{ route('admin.dashboard') }}" class="rounded-lg border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50">Administracija</a>
             @endif
