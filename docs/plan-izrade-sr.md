@@ -113,4 +113,4 @@ Sve poslovne stranice zaštititi prijavom, serverskom autorizacijom i CSRF zašt
 
 ## 9. Trenutno stanje projekta
 
-Repozitorijum sada sadrži pripremnu fazu: prijavu i odjavu, kolonu `is_admin`, administratorski middleware, administratorski i prodavčev početni ekran i testove kontrole pristupa. PHP, Composer, Laravel Boost i frontend build su podešeni. Poslovni modeli za dužnike i uplate još nisu implementirani i slede u narednim koracima.
+Repozitorijum sada sadrži pripremnu fazu i fazu podataka i obračuna: prijavu i odjavu, kolonu `is_admin`, administrativni middleware, modele dužnika, zaduženja i uplata, validaciju, servis knjiženja/storna i testove obračuna i kontrole pristupa. PHP, Composer, Laravel Boost i frontend build su podešeni. Ekrani za unos, godišnji pregled i profil dužnika slede u narednom koraku.
