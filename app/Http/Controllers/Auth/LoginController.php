@@ -22,7 +22,7 @@ class LoginController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        if (! Auth::attempt($credentials, $request->boolean('remember'))) {
+        if (! Auth::attempt(array_merge($credentials, ['is_active' => true]), $request->boolean('remember'))) {
             return back()->withErrors([
                 'email' => 'Uneti podaci nisu ispravni.',
             ])->onlyInput('email');

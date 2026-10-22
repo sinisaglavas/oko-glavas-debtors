@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\AuditLog;
 use App\Models\Debt;
 use App\Models\Payment;
 use App\Models\User;
@@ -42,13 +43,23 @@ class PaymentService
                 throw ValidationException::withMessages(['amount' => 'Uplata ne može biti veća od preostalog duga.']);
             }
 
-            return $lockedDebt->payments()->create([
+            $payment = $lockedDebt->payments()->create([
                 'amount_minor' => $amountMinor,
                 'paid_on' => $paidOn->toDateString(),
                 'note' => $note,
                 'created_by' => $createdBy->id,
                 'submission_token' => $submissionToken,
             ]);
+
+            AuditLog::query()->create([
+                'user_id' => $createdBy->id,
+                'action' => 'payment.created',
+                'auditable_type' => Payment::class,
+                'auditable_id' => $payment->id,
+                'metadata' => ['debt_id' => $lockedDebt->id, 'amount_minor' => $amountMinor],
+            ]);
+
+            return $payment;
         });
     }
 
@@ -74,6 +85,14 @@ class PaymentService
                 'voided_by' => $actor->id,
                 'void_reason' => $reason,
             ])->save();
+
+            AuditLog::query()->create([
+                'user_id' => $actor->id,
+                'action' => 'payment.voided',
+                'auditable_type' => Payment::class,
+                'auditable_id' => $lockedPayment->id,
+                'metadata' => ['reason' => $reason, 'debt_id' => $lockedPayment->debt_id],
+            ]);
 
             return $lockedPayment->fresh();
         });
