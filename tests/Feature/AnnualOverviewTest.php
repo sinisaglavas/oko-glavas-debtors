@@ -93,6 +93,36 @@ class AnnualOverviewTest extends TestCase
         $this->assertDatabaseHas('debts', ['debtor_id' => $debtor->id, 'original_amount_minor' => 1000000]);
     }
 
+    public function test_new_debtor_can_be_saved_without_address_and_city(): void
+    {
+        $vendor = User::factory()->create();
+
+        $response = $this->actingAs($vendor)->post(route('debtors.store'), [
+            'first_name' => 'Jelena',
+            'last_name' => 'Jovanović',
+            'phone' => '0601234567',
+            'incurred_on' => '2026-05-01',
+            'amount' => '10000',
+            'installment_count' => 2,
+        ]);
+
+        $response->assertRedirect(route('debtors.index', ['year' => 2026]));
+        $this->assertDatabaseHas('debtors', ['first_name' => 'Jelena', 'address' => null, 'city' => null]);
+    }
+
+    public function test_entry_form_uses_installment_selector_from_two_to_twenty_four(): void
+    {
+        $vendor = User::factory()->create();
+
+        $response = $this->actingAs($vendor)->get(route('debtors.create'));
+
+        $response->assertOk()
+            ->assertSee('<option value="2"', false)
+            ->assertSee('<option value="24"', false)
+            ->assertSee('Adresa <span class="font-normal text-slate-500">(opciono)</span>', false)
+            ->assertSee('Mesto <span class="font-normal text-slate-500">(opciono)</span>', false);
+    }
+
     public function test_invalid_installment_count_is_rejected(): void
     {
         $vendor = User::factory()->create();

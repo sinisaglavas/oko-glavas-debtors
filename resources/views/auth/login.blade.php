@@ -3,13 +3,13 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Prijava | Evidencija dužnika</title>
+        <title>Prijava | OKO Glavas</title>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="min-h-screen bg-slate-100 px-4 py-12 text-slate-900">
         <main class="mx-auto max-w-md rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
             <p class="text-sm font-semibold uppercase tracking-wider text-indigo-600">Optika</p>
-            <h1 class="mt-2 text-2xl font-bold">Evidencija dužnika</h1>
+            <h1 class="mt-2 text-2xl font-bold">OKO Glavas</h1>
             <p class="mt-2 text-sm text-slate-600">Prijavite se da biste nastavili.</p>
 
             <form method="POST" action="{{ route('login.store') }}" class="mt-8 space-y-5">
