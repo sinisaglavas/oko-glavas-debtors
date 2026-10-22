@@ -4,6 +4,8 @@ Status: faze 1, 2, 3, 4 i 5 su implementirane; aplikacija je spremna za završni
 
 Engleska verzija: [Implementation plan](implementation-plan-en.md).
 
+Plan admin panela: [Plan admin panela](plan-admin-panela-sr.md).
+
 ## 1. Cilj i obim prve verzije
 
 Jednostavna interna aplikacija za unos dužnika, pregled zaduženja po godinama, evidentiranje uplata i automatski obračun preostalog duga. Interfejs je na srpskom, prilagođen računaru i telefonu.
