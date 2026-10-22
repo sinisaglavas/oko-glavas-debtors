@@ -70,4 +70,21 @@ class AdminPanelTest extends TestCase
         $this->assertDatabaseHas('audit_logs', ['action' => 'payment.created']);
         $this->assertSame(1, AuditLog::query()->where('action', 'payment.created')->count());
     }
+
+    public function test_admin_can_update_debtor_contact_data_and_change_is_logged(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $debtor = Debtor::factory()->create(['city' => 'Novi Sad']);
+
+        $this->actingAs($admin)->put(route('admin.debtors.update', $debtor), [
+            'first_name' => $debtor->first_name,
+            'last_name' => $debtor->last_name,
+            'address' => 'Nova 12',
+            'city' => 'Beograd',
+            'phone' => $debtor->phone,
+        ])->assertRedirect(route('admin.debtors.index'));
+
+        $this->assertDatabaseHas('debtors', ['id' => $debtor->id, 'address' => 'Nova 12', 'city' => 'Beograd']);
+        $this->assertDatabaseHas('audit_logs', ['action' => 'debtor.updated', 'auditable_id' => $debtor->id]);
+    }
 }

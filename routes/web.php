@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminDebtorController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DebtorController;
@@ -25,6 +26,9 @@ Route::middleware('auth')->group(function (): void {
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function (): void {
         Route::get('/', [AdminController::class, 'index'])->name('dashboard');
         Route::get('/audit', [AdminController::class, 'audit'])->name('audit');
+        Route::get('/duznici', [AdminDebtorController::class, 'index'])->name('debtors.index');
+        Route::get('/duznici/{debtor}/izmena', [AdminDebtorController::class, 'edit'])->name('debtors.edit');
+        Route::put('/duznici/{debtor}', [AdminDebtorController::class, 'update'])->name('debtors.update');
         Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
         Route::get('/users/novo', [AdminUserController::class, 'create'])->name('users.create');
         Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
