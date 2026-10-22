@@ -1,6 +1,6 @@
 # Plan izrade aplikacije za evidenciju dužnika u optici
 
-Status: faze 1, 2 i 3 su implementirane; faze 4 i 5 slede.
+Status: faze 1, 2, 3 i 4 su implementirane; faza 5 sledi.
 
 Engleska verzija: [Implementation plan](implementation-plan-en.md).
 
@@ -113,4 +113,4 @@ Sve poslovne stranice zaštititi prijavom, serverskom autorizacijom i CSRF zašt
 
 ## 9. Trenutno stanje projekta
 
-Repozitorijum sada sadrži pripremu, podatke i obračun, kao i godišnji pregled i unos: prijavu i odjavu, kolonu `is_admin`, administrativni middleware, modele dužnika, zaduženja i uplata, validaciju, servis knjiženja/storna, godišnji pregled sa pretragom i filterima, formu za unos i testove. Stranica pojedinačnog dužnika i završne provere slede u narednom koraku.
+Repozitorijum sada sadrži pripremu, podatke i obračun, godišnji pregled i unos, kao i stranicu pojedinačnog dužnika: prijavu i odjavu, kolonu `is_admin`, administrativni middleware, modele, validaciju, servis knjiženja/storna, godišnji pregled sa pretragom i filterima, unos zaduženja, prikaz zaduženja po godinama, istoriju uplata i kontrolisani unos/storno uplata. Preostaju završne provere i isporuka.
