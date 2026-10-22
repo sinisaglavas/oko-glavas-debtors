@@ -31,4 +31,9 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/duznici', [DebtorController::class, 'index'])->name('debtors.index');
     Route::get('/duznici/novo', [DebtorController::class, 'create'])->name('debtors.create');
     Route::post('/duznici', [DebtorController::class, 'store'])->name('debtors.store');
+    Route::get('/duznici/{debtor}', [DebtorController::class, 'show'])->name('debtors.show');
+    Route::post('/duznici/{debtor}/uplate', [DebtorController::class, 'storePayment'])->name('debtors.payments.store');
+    Route::post('/duznici/{debtor}/uplate/storno', [DebtorController::class, 'voidPayment'])
+        ->middleware('admin')
+        ->name('debtors.payments.void');
 });

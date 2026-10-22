@@ -74,7 +74,9 @@
                 <tbody class="divide-y divide-slate-100">
                     @forelse ($debtors as $debtor)
                         <tr class="hover:bg-slate-50">
-                            <td class="whitespace-nowrap px-5 py-4 font-semibold">{{ $debtor->full_name }}</td>
+                            <td class="whitespace-nowrap px-5 py-4 font-semibold">
+                                <a href="{{ route('debtors.show', $debtor) }}?year={{ $year }}" class="text-indigo-700 hover:text-indigo-900 hover:underline">{{ $debtor->full_name }}</a>
+                            </td>
                             <td class="whitespace-nowrap px-5 py-4 text-slate-600">{{ $debtor->city }}</td>
                             <td class="whitespace-nowrap px-5 py-4 text-slate-600">{{ $debtor->phone }}</td>
                             <td class="whitespace-nowrap px-5 py-4 text-right">{{ Money::formatMinor($debtor->annual_original_minor) }} RSD</td>

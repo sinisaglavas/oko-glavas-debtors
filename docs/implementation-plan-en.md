@@ -113,4 +113,4 @@ Protect all business pages with login, server-side authorization, and CSRF prote
 
 ## 9. Current project state
 
-The repository now contains phases 1, 2, and 3: login and logout, the `is_admin` column, administrator middleware, debtor, debt and payment models, validation, payment/voiding service, annual overview with search and filters, entry forms, and automated tests. The individual debtor page and final verification follow next.
+The repository now contains phases 1 through 4: login and logout, the `is_admin` column, administrator middleware, debtor, debt and payment models, validation, payment/voiding service, annual overview with search and filters, entry forms, the individual debtor page grouped by year, payment history, and controlled payment entry/voiding. Final verification and delivery remain.
