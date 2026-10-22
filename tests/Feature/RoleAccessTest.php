@@ -44,7 +44,7 @@ class RoleAccessTest extends TestCase
         $response = $this->actingAs($admin)->get('/admin');
 
         $response->assertOk();
-        $response->assertSee('Administratorski pristup');
+        $response->assertSee('Admin panel');
     }
 
     public function test_user_can_log_in_and_is_redirected_to_dashboard(): void

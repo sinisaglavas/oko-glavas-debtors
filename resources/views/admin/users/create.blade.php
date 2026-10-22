@@ -1,0 +1,14 @@
+@extends('layouts.app')
+
+@section('content')
+    <div class="max-w-2xl"><a href="{{ route('admin.users.index') }}" class="text-sm font-semibold text-indigo-700">← Korisnici</a><h1 class="mt-3 text-2xl font-bold">Novi korisnik</h1><p class="mt-1 text-slate-600">Kreirajte nalog za administratora ili prodavca.</p>
+        @if ($errors->any())<div class="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-800"><ul class="list-inside list-disc text-sm">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+        <form method="POST" action="{{ route('admin.users.store') }}" class="mt-6 space-y-5 rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200">@csrf
+            <div><label for="name" class="block text-sm font-medium">Ime i prezime</label><input id="name" name="name" value="{{ old('name') }}" required class="mt-1 block w-full rounded-lg border-slate-300 px-4 py-3"></div>
+            <div><label for="email" class="block text-sm font-medium">Email</label><input id="email" type="email" name="email" value="{{ old('email') }}" required class="mt-1 block w-full rounded-lg border-slate-300 px-4 py-3"></div>
+            <div class="grid gap-4 sm:grid-cols-2"><div><label for="password" class="block text-sm font-medium">Lozinka</label><input id="password" type="password" name="password" required class="mt-1 block w-full rounded-lg border-slate-300 px-4 py-3"></div><div><label for="password_confirmation" class="block text-sm font-medium">Potvrda lozinke</label><input id="password_confirmation" type="password" name="password_confirmation" required class="mt-1 block w-full rounded-lg border-slate-300 px-4 py-3"></div></div>
+            <div><label for="is_admin" class="block text-sm font-medium">Uloga</label><select id="is_admin" name="is_admin" class="mt-1 block w-full rounded-lg border-slate-300 px-4 py-3"><option value="0">Prodavac</option><option value="1" @selected(old('is_admin') === '1')>Administrator</option></select></div>
+            <button class="rounded-lg bg-indigo-600 px-5 py-3 font-semibold text-white hover:bg-indigo-700">Kreiraj korisnika</button>
+        </form>
+    </div>
+@endsection

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DebtorController;
 use Illuminate\Support\Facades\Route;
@@ -20,9 +22,14 @@ Route::middleware('auth')->group(function (): void {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/admin', function () {
-        return view('admin.dashboard');
-    })->middleware('admin')->name('admin.dashboard');
+    Route::middleware('admin')->prefix('admin')->name('admin.')->group(function (): void {
+        Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+        Route::get('/audit', [AdminController::class, 'audit'])->name('audit');
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+        Route::get('/users/novo', [AdminUserController::class, 'create'])->name('users.create');
+        Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
+        Route::post('/users/{user}/toggle', [AdminUserController::class, 'toggle'])->name('users.toggle');
+    });
 
     Route::get('/prodavac', function () {
         return view('vendor.dashboard');
