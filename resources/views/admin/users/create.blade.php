@@ -11,23 +11,23 @@
             <div>
                 <label for="name" class="block text-sm font-medium">Ime i prezime</label>
                 <input id="name" name="name" value="{{ old('name') }}" required class="mt-1 block w-full rounded-lg border-slate-300 px-4 py-3">
-                @error('name')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                @error('name')<p class="field-error">{{ $message }}</p>@enderror
             </div>
             <div>
                 <label for="email" class="block text-sm font-medium">Email</label>
                 <input id="email" type="email" name="email" value="{{ old('email') }}" required class="mt-1 block w-full rounded-lg border-slate-300 px-4 py-3">
-                @error('email')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                @error('email')<p class="field-error">{{ $message }}</p>@enderror
             </div>
             <div class="grid gap-4 sm:grid-cols-2">
                 <div>
                     <label for="password" class="block text-sm font-medium">Lozinka</label>
                     <input id="password" type="password" name="password" required class="mt-1 block w-full rounded-lg border-slate-300 px-4 py-3">
-                    @error('password')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                    @error('password')<p class="field-error">{{ $message }}</p>@enderror
                 </div>
                 <div>
                     <label for="password_confirmation" class="block text-sm font-medium">Potvrda lozinke</label>
                     <input id="password_confirmation" type="password" name="password_confirmation" required class="mt-1 block w-full rounded-lg border-slate-300 px-4 py-3">
-                    @error('password_confirmation')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                    @error('password_confirmation')<p class="field-error">{{ $message }}</p>@enderror
                 </div>
             </div>
             <div>
@@ -36,7 +36,7 @@
                     <option value="0">Prodavac</option>
                     <option value="1" @selected(old('is_admin') === '1')>Administrator</option>
                 </select>
-                @error('is_admin')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                @error('is_admin')<p class="field-error">{{ $message }}</p>@enderror
             </div>
             <div>
                 <label for="store_id" class="block text-sm font-medium">Optika prodavca</label>
@@ -46,7 +46,7 @@
                         <option value="{{ $store->id }}" @selected((string) old('store_id') === (string) $store->id)>{{ $store->name }} ({{ $store->code }})</option>
                     @endforeach
                 </select>
-                @error('store_id')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                @error('store_id')<p class="field-error">{{ $message }}</p>@enderror
                 <p class="mt-1 text-xs text-slate-500">Obavezno za prodavca; administrator ima pristup svim optikama.</p>
             </div>
             <button class="rounded-lg bg-indigo-600 px-5 py-3 font-semibold text-white hover:bg-indigo-700">Kreiraj korisnika</button>

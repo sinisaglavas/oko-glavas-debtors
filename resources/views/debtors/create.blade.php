@@ -36,19 +36,19 @@
                         <div>
                             <label for="first_name" class="block text-sm font-medium">Ime <span class="text-red-600">*</span></label>
                             <input id="first_name" name="first_name" value="{{ old('first_name') }}" required class="mt-1 block w-full rounded-lg border px-4 py-3 text-base @error('first_name') border-red-500 ring-1 ring-red-500 @else border-slate-300 @enderror">
-                            @error('first_name')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                            @error('first_name')<p class="field-error">{{ $message }}</p>@enderror
                         </div>
                         <div>
                             <label for="last_name" class="block text-sm font-medium">Prezime <span class="text-red-600">*</span></label>
                             <input id="last_name" name="last_name" value="{{ old('last_name') }}" required class="mt-1 block w-full rounded-lg border px-4 py-3 text-base @error('last_name') border-red-500 ring-1 ring-red-500 @else border-slate-300 @enderror">
-                            @error('last_name')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                            @error('last_name')<p class="field-error">{{ $message }}</p>@enderror
                         </div>
                         <div class="sm:col-span-2"><label for="address" class="block text-sm font-medium">Adresa <span class="font-normal text-slate-500">(opciono)</span></label><input id="address" name="address" value="{{ old('address') }}" class="mt-1 block w-full rounded-lg border-slate-300 px-4 py-3 text-base"></div>
                         <div><label for="city" class="block text-sm font-medium">Mesto <span class="font-normal text-slate-500">(opciono)</span></label><input id="city" name="city" value="{{ old('city') }}" class="mt-1 block w-full rounded-lg border-slate-300 px-4 py-3 text-base"></div>
                         <div>
                             <label for="phone" class="block text-sm font-medium">Telefon <span class="text-red-600">*</span></label>
                             <input id="phone" name="phone" value="{{ old('phone') }}" required class="mt-1 block w-full rounded-lg border px-4 py-3 text-base @error('phone') border-red-500 ring-1 ring-red-500 @else border-slate-300 @enderror">
-                            @error('phone')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                            @error('phone')<p class="field-error">{{ $message }}</p>@enderror
                         </div>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                     <div>
                         <label for="amount" class="block text-sm font-medium">Ukupan dug (RSD) <span class="text-red-600">*</span></label>
                         <input id="amount" name="amount" inputmode="decimal" placeholder="24000,00" value="{{ old('amount') }}" required class="mt-1 block w-full rounded-lg border px-4 py-3 text-base @error('amount') border-red-500 ring-1 ring-red-500 @else border-slate-300 @enderror">
-                        @error('amount')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                        @error('amount')<p class="field-error">{{ $message }}</p>@enderror
                     </div>
                     <div><label for="installment_count" class="block text-sm font-medium">Broj rata (2–24)</label><select id="installment_count" name="installment_count" class="mt-1 block w-full rounded-lg border-slate-300 px-4 py-3 text-base">@for ($installments = 2; $installments <= 24; $installments++)<option value="{{ $installments }}" @selected((int) old('installment_count', 12) === $installments)>{{ $installments }}</option>@endfor</select></div>
                 </div>
