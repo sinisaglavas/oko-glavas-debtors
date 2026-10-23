@@ -175,6 +175,8 @@ class DebtorController extends Controller
         $data = $request->validated();
 
         $debt = DB::transaction(function () use ($data, $request): Debt {
+            $storeId = $request->user()->store_id;
+
             if (! empty($data['debtor_id'])) {
                 $debtor = Debtor::query()->findOrFail($data['debtor_id']);
             } else {
@@ -184,10 +186,11 @@ class DebtorController extends Controller
                     'address',
                     'city',
                     'phone',
-                ]));
+                ]) + ['store_id' => $storeId]);
             }
 
             return $debtor->debts()->create([
+                'store_id' => $debtor->store_id ?? $storeId,
                 'incurred_on' => $data['incurred_on'],
                 'original_amount_minor' => $request->amountMinor(),
                 'installment_count' => $data['installment_count'],

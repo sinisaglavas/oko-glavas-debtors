@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Debt;
 use App\Models\Debtor;
+use App\Models\Store;
 use App\Models\User;
 use App\Services\PaymentService;
 use Carbon\CarbonImmutable;
@@ -75,6 +76,30 @@ class AnnualOverviewTest extends TestCase
         $response->assertRedirect(route('debtors.index', ['year' => 2026]));
         $this->assertDatabaseHas('debtors', ['first_name' => 'Nikola', 'last_name' => 'Nikolić']);
         $this->assertDatabaseHas('debts', ['original_amount_minor' => 2400000, 'installment_count' => 12, 'created_by' => $vendor->id]);
+    }
+
+    public function test_new_entry_is_assigned_to_the_logged_in_users_store(): void
+    {
+        $store = Store::factory()->create(['code' => 'NS-2']);
+        $vendor = User::factory()->create(['store_id' => $store->id]);
+
+        $this->actingAs($vendor)->post(route('debtors.store'), [
+            'first_name' => 'Jovan',
+            'last_name' => 'Jovanovic',
+            'phone' => '0601234567',
+            'incurred_on' => '2026-06-01',
+            'amount' => '12000',
+            'installment_count' => 6,
+        ])->assertRedirect(route('debtors.index', ['year' => 2026]));
+
+        $this->assertDatabaseHas('debtors', [
+            'first_name' => 'Jovan',
+            'store_id' => $store->id,
+        ]);
+        $this->assertDatabaseHas('debts', [
+            'original_amount_minor' => 1200000,
+            'store_id' => $store->id,
+        ]);
     }
 
     public function test_existing_debtor_can_receive_a_new_debt(): void
