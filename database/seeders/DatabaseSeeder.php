@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Debtor;
+use App\Models\Store;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,6 +18,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $store = Store::firstOrCreate(
+            ['code' => 'NS-1'],
+            [
+                'name' => 'Optika Glavas NS 1',
+                'is_active' => true,
+            ],
+        );
+
         $admin = User::factory()->create([
             'name' => 'Administrator',
             'email' => 'admin@example.com',
@@ -28,6 +37,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Prodavac',
             'email' => 'prodavac@example.com',
             'password' => 'password',
+            'store_id' => $store->id,
         ]);
 
         if (app()->environment('local')) {
@@ -35,12 +45,14 @@ class DatabaseSeeder extends Seeder
                 'first_name' => 'Milan',
                 'last_name' => 'Jovanović',
                 'city' => 'Beograd',
+                'store_id' => $store->id,
             ]);
 
             $debt = $debtor->debts()->create([
                 'incurred_on' => now()->startOfYear()->toDateString(),
                 'original_amount_minor' => 2400000,
                 'installment_count' => 12,
+                'store_id' => $store->id,
                 'created_by' => $admin->id,
             ]);
 

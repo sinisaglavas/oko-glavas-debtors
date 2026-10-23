@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['debtor_id', 'incurred_on', 'original_amount_minor', 'installment_count', 'created_by'])]
+#[Fillable(['debtor_id', 'store_id', 'incurred_on', 'original_amount_minor', 'installment_count', 'created_by'])]
 class Debt extends Model
 {
     /** @use HasFactory<DebtFactory> */
@@ -28,6 +28,11 @@ class Debt extends Model
     public function debtor(): BelongsTo
     {
         return $this->belongsTo(Debtor::class);
+    }
+
+    public function store(): BelongsTo
+    {
+        return $this->belongsTo(Store::class);
     }
 
     public function payments(): HasMany
