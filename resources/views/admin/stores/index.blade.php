@@ -26,7 +26,7 @@
                     @if ($store->is_active)
                         <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">Aktivna</span>
                     @else
-                        <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">Deaktivirana</span>
+                        <span class="rounded-full !bg-red-600 px-2.5 py-1 text-xs font-semibold !text-white">Deaktivirana</span>
                     @endif
                 </div>
                 <dl class="mt-5 grid grid-cols-3 gap-3 text-sm">
