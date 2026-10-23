@@ -7,3 +7,24 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+@layer base {
+    :where(input:not([type='checkbox']):not([type='radio']), select, textarea) {
+        border-width: 1px;
+        border-style: solid;
+        border-color: var(--color-slate-300);
+        background-color: var(--color-white);
+        color: var(--color-slate-900);
+        color-scheme: light;
+    }
+
+    :where(input:not([type='checkbox']):not([type='radio']), select, textarea):focus {
+        border-color: var(--color-indigo-500);
+        outline: 2px solid color-mix(in srgb, var(--color-indigo-500) 20%, transparent);
+        outline-offset: 1px;
+    }
+
+    :where(select) {
+        appearance: auto;
+    }
+}
