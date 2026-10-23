@@ -6,6 +6,8 @@ Engleska verzija: [Implementation plan](implementation-plan-en.md).
 
 Plan admin panela: [Plan admin panela](plan-admin-panela-sr.md).
 
+Plan verzije 2.0 sa više optika: [Plan v2.0](plan-v2-multi-store-sr.md).
+
 ## 1. Cilj i obim prve verzije
 
 Jednostavna interna aplikacija za unos dužnika, pregled zaduženja po godinama, evidentiranje uplata i automatski obračun preostalog duga. Interfejs je na srpskom, prilagođen računaru i telefonu.
