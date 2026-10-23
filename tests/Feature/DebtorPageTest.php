@@ -26,6 +26,8 @@ class DebtorPageTest extends TestCase
             ->assertSee('Milan Jovanović')
             ->assertSee('2025')
             ->assertSee('2026')
+            ->assertSee('Rata 1')
+            ->assertSee('Otvorena')
             ->assertSee('3.500,00 RSD');
     }
 
