@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AssignUserStoreRequest;
 use App\Http\Requests\StoreAdminUserRequest;
 use App\Models\AuditLog;
+use App\Models\Store;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,6 +23,7 @@ class AdminUserController extends Controller
                         ->orWhere('email', 'like', "%{$search}%");
                 });
             })
+            ->with('store')
             ->orderByDesc('is_admin')
             ->orderBy('name')
             ->paginate(20)
@@ -31,7 +34,9 @@ class AdminUserController extends Controller
 
     public function create(): View
     {
-        return view('admin.users.create');
+        return view('admin.users.create', [
+            'stores' => Store::query()->where('is_active', true)->orderBy('name')->get(),
+        ]);
     }
 
     public function store(StoreAdminUserRequest $request): RedirectResponse
@@ -49,6 +54,26 @@ class AdminUserController extends Controller
         ]);
 
         return redirect()->route('admin.users.index')->with('status', 'Korisnik je uspešno kreiran.');
+    }
+
+    public function assignStore(AssignUserStoreRequest $request, User $user): RedirectResponse
+    {
+        abort_if($user->isAdmin(), 422, 'Administrator nema ograničenje na jednu optiku.');
+
+        $before = $user->store_id;
+        $user->forceFill(['store_id' => $request->integer('store_id')])->save();
+
+        AuditLog::query()->create([
+            'user_id' => $request->user()->id,
+            'action' => 'user.store_assigned',
+            'auditable_type' => User::class,
+            'auditable_id' => $user->id,
+            'metadata' => ['before_store_id' => $before, 'after_store_id' => $user->store_id],
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
+
+        return back()->with('status', 'Optika prodavca je izmenjena.');
     }
 
     public function toggle(User $user, Request $request): RedirectResponse

@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\Debt;
+use App\Models\Debtor;
+use App\Models\Store;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -68,5 +71,16 @@ class RoleAccessTest extends TestCase
         $this->get(route('login'))
             ->assertOk()
             ->assertSee('OKO Glavas');
+    }
+
+    public function test_vendor_cannot_view_a_debtor_from_another_store(): void
+    {
+        $storeOne = Store::factory()->create(['code' => 'NS-2']);
+        $storeTwo = Store::factory()->create(['code' => 'NS-3']);
+        $vendor = User::factory()->create(['is_admin' => false, 'store_id' => $storeOne->id]);
+        $debtor = Debtor::factory()->create(['store_id' => $storeTwo->id, 'first_name' => 'DrugaOptika']);
+        Debt::factory()->for($debtor)->create(['store_id' => $storeTwo->id, 'incurred_on' => '2026-01-01']);
+
+        $this->actingAs($vendor)->get(route('debtors.show', $debtor))->assertNotFound();
     }
 }
