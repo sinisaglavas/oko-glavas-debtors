@@ -52,6 +52,10 @@ class Debt extends Model
 
     public function paidAmountMinor(): int
     {
+        if ($this->relationLoaded('payments')) {
+            return (int) $this->payments->whereNull('voided_at')->sum('amount_minor');
+        }
+
         return (int) $this->payments()->whereNull('voided_at')->sum('amount_minor');
     }
 
@@ -72,5 +76,29 @@ class Debt extends Model
         $last = $this->original_amount_minor - ($base * ($this->installment_count - 1));
 
         return [...array_fill(0, $this->installment_count - 1, $base), $last];
+    }
+
+    /**
+     * @return array<int, array{number: int, amount_minor: int, paid_minor: int, outstanding_minor: int, status: string}>
+     */
+    public function installmentProgress(): array
+    {
+        $remainingPaid = $this->paidAmountMinor();
+        $progress = [];
+
+        foreach ($this->installmentScheduleMinor() as $index => $amountMinor) {
+            $paidMinor = min($remainingPaid, $amountMinor);
+            $remainingPaid = max(0, $remainingPaid - $paidMinor);
+
+            $progress[] = [
+                'number' => $index + 1,
+                'amount_minor' => $amountMinor,
+                'paid_minor' => $paidMinor,
+                'outstanding_minor' => $amountMinor - $paidMinor,
+                'status' => $paidMinor >= $amountMinor ? 'paid' : ($paidMinor > 0 ? 'partial' : 'open'),
+            ];
+        }
+
+        return $progress;
     }
 }
