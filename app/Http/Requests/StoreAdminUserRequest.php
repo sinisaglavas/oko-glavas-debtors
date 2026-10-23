@@ -35,4 +35,23 @@ class StoreAdminUserRequest extends FormRequest
             ],
         ];
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Ime i prezime su obavezni.',
+            'email.required' => 'Email je obavezan.',
+            'email.email' => 'Unesite ispravnu email adresu.',
+            'email.unique' => 'Ovaj email je već zauzet.',
+            'password.required' => 'Lozinka je obavezna.',
+            'password.min' => 'Lozinka mora imati najmanje 8 karaktera.',
+            'password.confirmed' => 'Potvrda lozinke se ne podudara.',
+            'is_admin.required' => 'Izaberite ulogu korisnika.',
+            'store_id.required_if' => 'Izaberite optiku za prodavca.',
+            'store_id.exists' => 'Izabrana optika nije dostupna.',
+        ];
+    }
 }
