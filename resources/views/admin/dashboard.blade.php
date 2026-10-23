@@ -11,6 +11,7 @@
         </div>
         <div class="flex flex-wrap gap-2">
             <a href="{{ route('admin.users.index') }}" class="rounded-lg border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50">Korisnici</a>
+            <a href="{{ route('admin.stores.index') }}" class="rounded-lg border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50">Optike</a>
             <a href="{{ route('admin.debtors.index') }}" class="rounded-lg border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50">Dužnici</a>
             <a href="{{ route('admin.audit') }}" class="rounded-lg border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50">Audit log</a>
         </div>

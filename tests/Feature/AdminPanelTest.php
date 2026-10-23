@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\AuditLog;
 use App\Models\Debt;
 use App\Models\Debtor;
+use App\Models\Store;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -21,6 +22,8 @@ class AdminPanelTest extends TestCase
             ->assertOk()
             ->assertSee('Admin panel');
         $this->actingAs($admin)->get(route('admin.users.index'))->assertOk()->assertSee('Korisnici');
+        $this->actingAs($admin)->get(route('admin.stores.index'))->assertOk()->assertSee('Optike');
+        $this->actingAs($admin)->get(route('admin.stores.create'))->assertOk()->assertSee('Nova optika');
         $this->actingAs($admin)->get(route('admin.audit'))->assertOk()->assertSee('Audit log');
     }
 
@@ -30,11 +33,13 @@ class AdminPanelTest extends TestCase
 
         $this->actingAs($vendor)->get(route('admin.dashboard'))->assertForbidden();
         $this->actingAs($vendor)->post(route('admin.users.store'), [])->assertForbidden();
+        $this->actingAs($vendor)->get(route('admin.stores.index'))->assertForbidden();
     }
 
     public function test_admin_can_create_and_deactivate_a_vendor_with_audit_entries(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
+        $store = Store::factory()->create(['code' => 'NS-2']);
 
         $response = $this->actingAs($admin)->post(route('admin.users.store'), [
             'name' => 'Nova prodaja',
@@ -42,16 +47,38 @@ class AdminPanelTest extends TestCase
             'password' => 'password123',
             'password_confirmation' => 'password123',
             'is_admin' => '0',
+            'store_id' => $store->id,
         ]);
 
         $response->assertRedirect(route('admin.users.index'));
         $user = User::query()->where('email', 'nova@example.com')->firstOrFail();
         $this->assertTrue($user->is_active);
+        $this->assertSame($store->id, $user->store_id);
         $this->assertDatabaseHas('audit_logs', ['action' => 'user.created', 'auditable_id' => $user->id]);
 
         $this->actingAs($admin)->post(route('admin.users.toggle', $user))->assertRedirect();
         $this->assertFalse($user->fresh()->is_active);
         $this->assertDatabaseHas('audit_logs', ['action' => 'user.deactivated', 'auditable_id' => $user->id]);
+    }
+
+    public function test_admin_can_create_and_deactivate_a_store_with_audit_entries(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+
+        $response = $this->actingAs($admin)->post(route('admin.stores.store'), [
+            'name' => 'Optika Glavas Futog',
+            'code' => 'FUT-1',
+            'city' => 'Futog',
+        ]);
+
+        $response->assertRedirect(route('admin.stores.index'));
+        $store = Store::query()->where('code', 'FUT-1')->firstOrFail();
+        $this->assertTrue($store->is_active);
+        $this->assertDatabaseHas('audit_logs', ['action' => 'store.created', 'auditable_id' => $store->id]);
+
+        $this->actingAs($admin)->post(route('admin.stores.toggle', $store))->assertRedirect();
+        $this->assertFalse($store->fresh()->is_active);
+        $this->assertDatabaseHas('audit_logs', ['action' => 'store.deactivated', 'auditable_id' => $store->id]);
     }
 
     public function test_payment_actions_are_written_to_audit_log(): void

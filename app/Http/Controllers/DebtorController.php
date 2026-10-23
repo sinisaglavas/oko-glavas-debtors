@@ -38,6 +38,7 @@ class DebtorController extends Controller
         };
 
         $debtors = Debtor::query()
+            ->visibleTo($request->user())
             ->whereHas('debts', $debtQuery)
             ->when($search !== '', function (Builder $query) use ($search): void {
                 $term = "%{$search}%";
@@ -80,12 +81,12 @@ class DebtorController extends Controller
             return $debtor;
         });
 
-        $originalTotal = (int) (Debt::query()->forYear($year)->sum('original_amount_minor'));
+        $originalTotal = (int) (Debt::query()->visibleTo($request->user())->forYear($year)->sum('original_amount_minor'));
         $paidTotal = (int) Payment::query()
             ->whereNull('voided_at')
-            ->whereHas('debt', $debtQuery)
+            ->whereHas('debt', fn (Builder $query): Builder => $query->visibleTo($request->user())->whereBetween('incurred_on', [$start, $end]))
             ->sum('amount_minor');
-        $years = Debt::query()
+        $years = Debt::query()->visibleTo($request->user())
             ->select('incurred_on')
             ->distinct()
             ->orderByDesc('incurred_on')
@@ -106,15 +107,16 @@ class DebtorController extends Controller
         ]);
     }
 
-    public function create(): View
+    public function create(Request $request): View
     {
         return view('debtors.create', [
-            'debtors' => Debtor::query()->orderBy('last_name')->orderBy('first_name')->get(),
+            'debtors' => Debtor::query()->visibleTo($request->user())->orderBy('last_name')->orderBy('first_name')->get(),
         ]);
     }
 
     public function show(Debtor $debtor, Request $request): View
     {
+        $debtor = Debtor::query()->visibleTo($request->user())->findOrFail($debtor->id);
         $validated = $request->validate([
             'year' => ['nullable', 'integer', 'min:2000', 'max:2100'],
         ]);
@@ -142,6 +144,7 @@ class DebtorController extends Controller
 
     public function storePayment(Debtor $debtor, StorePaymentRequest $request, PaymentService $paymentService): RedirectResponse
     {
+        $debtor = Debtor::query()->visibleTo($request->user())->findOrFail($debtor->id);
         $data = $request->validated();
         $debt = $debtor->debts()->findOrFail($data['debt_id']);
 
@@ -160,6 +163,7 @@ class DebtorController extends Controller
 
     public function voidPayment(Debtor $debtor, VoidPaymentRequest $request, PaymentService $paymentService): RedirectResponse
     {
+        $debtor = Debtor::query()->visibleTo($request->user())->findOrFail($debtor->id);
         $data = $request->validated();
         $payment = $debtor->debts()->whereKey($data['debt_id'])->firstOrFail()
             ->payments()->findOrFail($data['payment_id']);
@@ -178,7 +182,7 @@ class DebtorController extends Controller
             $storeId = $request->user()->store_id;
 
             if (! empty($data['debtor_id'])) {
-                $debtor = Debtor::query()->findOrFail($data['debtor_id']);
+                $debtor = Debtor::query()->visibleTo($request->user())->findOrFail($data['debtor_id']);
             } else {
                 $debtor = Debtor::query()->create(Arr::only($data, [
                     'first_name',

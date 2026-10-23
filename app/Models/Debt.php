@@ -50,6 +50,17 @@ class Debt extends Model
         return $query->whereBetween('incurred_on', ["{$year}-01-01", "{$year}-12-31"]);
     }
 
+    public function scopeVisibleTo(Builder $query, User $user): Builder
+    {
+        if ($user->isAdmin()) {
+            return $query;
+        }
+
+        return $user->store_id === null
+            ? $query->whereNull('store_id')
+            : $query->where('store_id', $user->store_id);
+    }
+
     public function paidAmountMinor(): int
     {
         if ($this->relationLoaded('payments')) {
